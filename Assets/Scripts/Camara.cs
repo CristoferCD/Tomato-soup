@@ -10,20 +10,22 @@ public class Camara : MonoBehaviour {
     private Renderer rendDer;
     private Vector3 posAnterior;
     private float offset = 5.0f;
-    private float ancho;
+    private float valorIzq;
+    private float valorDer;
 
 	// Use this for initialization
 	void Start () {
         rendIzq = limIzq.GetComponent<Renderer>();
         rendDer = limDer.GetComponent<Renderer>();
-        ancho = 2.0f * Mathf.Abs(transform.position.z) * Mathf.Tan(GetComponent<Camera>().fieldOfView * 0.5f * Mathf.Deg2Rad) * GetComponent<Camera>().aspect;
-        print(ancho);
+        float anchoIzq = 2.0f * Mathf.Abs(transform.position.z - limIzq.transform.position.z) * Mathf.Tan(GetComponent<Camera>().fieldOfView * 0.5f * Mathf.Deg2Rad) * GetComponent<Camera>().aspect;
+        float anchoDer = 2.0f * Mathf.Abs(transform.position.z - limDer.transform.position.z) * Mathf.Tan(GetComponent<Camera>().fieldOfView * 0.5f * Mathf.Deg2Rad) * GetComponent<Camera>().aspect;
+        valorIzq = limIzq.transform.position.x + anchoIzq / 2.0f;
+        valorDer = limDer.transform.position.x - anchoDer / 2.0f;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        float posicion = Mathf.Min(limDer.transform.position.x - ancho / 2.0f, Mathf.Max(limIzq.transform.position.x + ancho / 2.0f, target.transform.position.x));
+        float posicion = Mathf.Min(valorDer, Mathf.Max(valorIzq, target.transform.position.x));
         transform.position = new Vector3(posicion, transform.position.y, transform.position.z);
-        print(posicion);
     }
 }
